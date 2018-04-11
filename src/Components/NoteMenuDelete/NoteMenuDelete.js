@@ -2,6 +2,7 @@ import {graphql} from 'react-apollo';
 import React, {Component} from 'react';
 import {MenuItem} from 'material-ui';
 import NotesService from "../../Services/Notes";
+import UserService from "../../Services/User";
 
 class NoteMenuDelete extends Component {
 
@@ -10,10 +11,24 @@ class NoteMenuDelete extends Component {
         const update = (cache, {data: {deleteNote}}) => {
             const data = cache.readQuery({
                 query: NotesService.queries.allNotes,
-                variables: {orderBy: 'createdAt_DESC'}
+                variables: {
+                    orderBy: 'createdAt_DESC', filter: {
+                        user: {
+                            id: UserService.getUser().userId
+                        }
+                    }
+                }
             });
             data.allNotes = data.allNotes.filter(note => note.id !== deleteNote.id);
-            cache.writeQuery({query: NotesService.queries.allNotes, variables: {orderBy: 'createdAt_DESC'}, data});
+            cache.writeQuery({
+                query: NotesService.queries.allNotes, variables: {
+                    orderBy: 'createdAt_DESC', filter: {
+                        user: {
+                            id: UserService.getUser().userId
+                        }
+                    }
+                }, data
+            });
         };
 
         const optimisticResponse = {
@@ -25,7 +40,13 @@ class NoteMenuDelete extends Component {
 
         const refetchQueries = [{
             query: NotesService.queries.allNotes,
-            variables: {orderBy: 'createdAt_DESC'},
+            variables: {
+                orderBy: 'createdAt_DESC', filter: {
+                    user: {
+                        id: UserService.getUser().userId
+                    }
+                }
+            },
         }];
 
         return (

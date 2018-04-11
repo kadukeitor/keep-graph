@@ -40,10 +40,24 @@ class NoteCreate extends Component {
             this.setState({loading: false, title: '', content: ''});
             const data = cache.readQuery({
                 query: NotesService.queries.allNotes,
-                variables: {orderBy: 'createdAt_DESC'}
+                variables: {
+                    orderBy: 'createdAt_DESC', filter: {
+                        user: {
+                            id: UserService.getUser().userId
+                        }
+                    }
+                }
             });
             data.allNotes = [createNote, ...data.allNotes];
-            cache.writeQuery({query: NotesService.queries.allNotes, variables: {orderBy: 'createdAt_DESC'}, data});
+            cache.writeQuery({
+                query: NotesService.queries.allNotes, variables: {
+                    orderBy: 'createdAt_DESC', filter: {
+                        user: {
+                            id: UserService.getUser().userId
+                        }
+                    }
+                }, data
+            });
         };
 
         const optimisticResponse = {

@@ -12,7 +12,8 @@ class AppToolBarMenu extends Component {
                       anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
                 <MenuItem primaryText="Sign Out" onClick={() => {
                     UserService.removeToken();
-                    window.location = "/signIn";
+                    this.props.history.replace("/signIn");
+                    window.location.reload();
                 }}/>
             </IconMenu>
         );

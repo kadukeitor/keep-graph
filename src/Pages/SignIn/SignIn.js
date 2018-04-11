@@ -32,6 +32,7 @@ class SignIn extends Component {
             this.setState({loading: false});
             UserService.setToken(signinUser.token);
             this.props.history.replace("/");
+            window.location.reload();
         };
 
         const onError = () => {

@@ -2,8 +2,8 @@ import gql from "graphql-tag";
 
 const queries = {
     allNotes: gql`
-          query allNotes ($orderBy: NoteOrderBy) {
-            allNotes (orderBy: $orderBy) {
+          query allNotes ($orderBy: NoteOrderBy, $filter: NoteFilter) {
+            allNotes (filter: $filter, orderBy: $orderBy) {
               id
               title
               content

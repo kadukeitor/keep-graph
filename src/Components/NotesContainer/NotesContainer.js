@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import NotesList from "../NotesList/NotesList";
+import UserService from "../../Services/User";
 import NotesService from "../../Services/Notes";
 import {graphql} from "react-apollo/index";
 
@@ -36,7 +37,12 @@ class NotesContainer extends Component {
 export default graphql(NotesService.queries.allNotes, {
     options: () => ({
         variables: {
-            orderBy: 'createdAt_DESC'
+            orderBy: 'createdAt_DESC',
+            filter: {
+                user: {
+                    id: UserService.getUser().userId
+                }
+            }
         },
     })
 })(NotesContainer);

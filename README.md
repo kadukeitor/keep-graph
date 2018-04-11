@@ -7,4 +7,4 @@ It's built on top of [React](https://reactjs.org) and [GraphQL](https://graphql.
 
 ## Demo
 
-Check the demo [here]()
+Check the demo [here](https://kadukeitor.github.io/keep-graph/)
