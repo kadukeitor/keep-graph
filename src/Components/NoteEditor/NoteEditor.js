@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import {GridList, GridTile} from 'material-ui/GridList';
+import NoteColor from "../NoteColor/NoteColor";
 import NotesService from "../../Services/Notes";
 import {graphql} from "react-apollo/index";
 
@@ -10,8 +12,7 @@ class NoteEditor extends Component {
         super(props);
         this.state = {
             title: props.note.title || '',
-            content: props.note.content || '',
-            color: props.note.color || 'white'
+            content: props.note.content || ''
         }
     }
 
@@ -22,7 +23,7 @@ class NoteEditor extends Component {
                 id: this.props.note.id,
                 title: this.state.title,
                 content: this.state.content,
-                color: this.state.color,
+                color: this.props.note.color,
                 updatedAt: new Date().toISOString(),
                 __typename: 'Note',
             },
@@ -40,8 +41,7 @@ class NoteEditor extends Component {
                         variables: {
                             id: this.props.note.id,
                             title: this.state.title,
-                            content: this.state.content,
-                            color: this.state.color
+                            content: this.state.content
                         },
                         optimisticResponse: optimisticResponse
                     })
@@ -68,14 +68,22 @@ class NoteEditor extends Component {
                     value={this.state.content}
                     onChange={(e) => this.setState({content: e.target.value})}
                 />
-                <div style={{textAlign: 'right', marginBottom: -10, marginRight: -10}}>
+                <div style={{textAlign: 'right', marginBottom: -20, marginRight: -10, marginLeft: -10}}>
                     <div style={{margin: 4, fontStyle: 'italic', fontSize: 14}}>
                         <small>Edited on {new Date(this.props.note.updatedAt).toLocaleString()}</small>
                     </div>
-                    <FlatButton
-                        label="Done"
-                        type="submit"
-                    />
+                    <GridList cellHeight='auto'>
+                        <GridTile style={{textAlign: 'left'}}>
+                            <NoteColor note={this.props.note}/>
+                        </GridTile>
+                        <GridTile style={{textAlign: 'right'}}>
+                            <FlatButton
+                                label="Done"
+                                type="submit"
+                            />
+                        </GridTile>
+                    </GridList>
+
                 </div>
             </form>
         )

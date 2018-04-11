@@ -35,6 +35,11 @@ class Note extends Component {
 
         let classes = '';
 
+        // Color
+        if (this.props.note.color) {
+            classes += ` ${this.props.note.color}`;
+        }
+
         // Hover
         if (this.state.hover) {
             classes += 'hover';
@@ -76,10 +81,11 @@ class Note extends Component {
                         <NoteMenu note={this.props.note}/>
                     </CardActions>
                 </Card>
-                <Dialog
+                    <Dialog
                     modal={false}
                     open={this.state.open}
                     contentStyle={{width: 600}}
+                    bodyClassName={classes}
                     onRequestClose={this.handleClose}>
                     <NoteEditor note={this.props.note} handleClose={this.handleClose}/>
                 </Dialog>
