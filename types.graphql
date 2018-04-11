@@ -1,0 +1,29 @@
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type User @model {
+  id: ID! @isUnique
+  notes: [Note!]! @relation(name: "UserOnNote")
+  email: String @isUnique
+  password: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Note @model {
+  id: ID! @isUnique
+  user: User! @relation(name: "UserOnNote")
+  title: String
+  content: String
+  color: String @defaultValue(value: "white")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
