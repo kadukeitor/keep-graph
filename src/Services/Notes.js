@@ -16,8 +16,8 @@ const queries = {
 
 const mutations = {
     createNote: gql`
-          mutation createNote($title: String, $content: String, $userId: ID) {
-            createNote(title: $title, content: $content, userId: $userId ) {
+          mutation createNote($title: String, $content: String, $color: String, $userId: ID) {
+            createNote(title: $title, content: $content, color: $color, userId: $userId ) {
               id
               title
               content
@@ -34,8 +34,8 @@ const mutations = {
           }
         `,
     updateNote: gql`
-          mutation updateNote($id: ID!, $title: String , $content: String) {
-            updateNote( id: $id, title: $title, content: $content ) {
+          mutation updateNote($id: ID!, $title: String , $content: String, $color: String) {
+            updateNote( id: $id, title: $title, content: $content, color: $color ) {
               id
               title
               content
@@ -44,17 +44,6 @@ const mutations = {
             }
           }
         `,
-    updateNoteColor: gql`
-          mutation updateNote($id: ID!, $color: String) {
-            updateNote( id: $id, color: $color) {
-              id
-              title
-              content
-              color
-              updatedAt
-            }
-          }
-        `
 };
 
 const subscriptions = {

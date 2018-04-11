@@ -3,6 +3,8 @@ import {Card, CardActions, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import UserService from "../../Services/User";
+import {GridList, GridTile} from 'material-ui/GridList';
+import NoteColor from "../NoteColor/NoteColor";
 import NotesService from "../../Services/Notes";
 import {graphql} from "react-apollo/index";
 
@@ -29,6 +31,13 @@ class NoteCreate extends Component {
 
         const user = UserService.getUser();
 
+        let classes = '';
+
+        // Color
+        if (this.state.color) {
+            classes += ` ${this.state.color}`;
+        }
+
         const styles = {
             width: 'calc(100% - 64px)',
             maxWidth: 600,
@@ -48,16 +57,18 @@ class NoteCreate extends Component {
                     }
                 }
             });
-            data.allNotes = [createNote, ...data.allNotes];
-            cache.writeQuery({
-                query: NotesService.queries.allNotes, variables: {
-                    orderBy: 'createdAt_DESC', filter: {
-                        user: {
-                            id: UserService.getUser().userId
+            if (!data.allNotes.find(note => note.id === createNote.id)) {
+                data.allNotes = [createNote, ...data.allNotes];
+                cache.writeQuery({
+                    query: NotesService.queries.allNotes, variables: {
+                        orderBy: 'createdAt_DESC', filter: {
+                            user: {
+                                id: UserService.getUser().userId
+                            }
                         }
-                    }
-                }, data
-            });
+                    }, data
+                });
+            }
         };
 
         const optimisticResponse = {
@@ -99,7 +110,7 @@ class NoteCreate extends Component {
                         optimisticResponse: optimisticResponse
                     })
                 }}>
-                <Card style={styles}>
+                <Card style={styles} className={classes}>
                     <CardText color="#999" padding="0">
                         <TextField
                             hintText="Title"
@@ -125,7 +136,19 @@ class NoteCreate extends Component {
                         />
                     </CardText>
                     <CardActions style={{textAlign: 'right'}}>
-                        <FlatButton label="Done" type="submit"/>
+                        <GridList cellHeight='auto'>
+                            <GridTile style={{textAlign: 'left'}}>
+                                <NoteColor note={this.state} onChange={color => {
+                                    this.setState({color: color})
+                                }}/>
+                            </GridTile>
+                            <GridTile style={{textAlign: 'right'}}>
+                                <FlatButton
+                                    label="Done"
+                                    type="submit"
+                                />
+                            </GridTile>
+                        </GridList>
                     </CardActions>
                 </Card>
             </form>

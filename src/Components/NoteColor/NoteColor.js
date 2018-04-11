@@ -12,22 +12,29 @@ class NoteColor extends Component {
     }
 
     changeColor(color) {
-        this.props.mutate({
-            variables: {
-                id: this.props.note.id,
-                color: color
-            },
-            optimisticResponse: {
-                updateNote: {
+        // Callback
+        if (this.props.onChange) {
+            this.props.onChange(color);
+        }
+        // Existing Note
+        if (this.props.note.id) {
+            this.props.mutate({
+                variables: {
                     id: this.props.note.id,
-                    title: this.props.note.title,
-                    content: this.props.note.content,
-                    color: color,
-                    updatedAt: new Date().toISOString(),
-                    __typename: 'Note',
+                    color: color
                 },
-            }
-        });
+                optimisticResponse: {
+                    updateNote: {
+                        id: this.props.note.id,
+                        title: this.props.note.title,
+                        content: this.props.note.content,
+                        color: color,
+                        updatedAt: new Date().toISOString(),
+                        __typename: 'Note',
+                    },
+                }
+            });
+        }
     }
 
     render() {
@@ -59,4 +66,4 @@ class NoteColor extends Component {
 
 }
 
-export default graphql(NotesService.mutations.updateNoteColor)(NoteColor)
+export default graphql(NotesService.mutations.updateNote)(NoteColor)

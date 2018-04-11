@@ -73,7 +73,7 @@ class Note extends Component {
                                 title={this.props.note.title}
                     />
                     <CardText onClick={this.handleOpen}
-                              padding="0" style={{fontSize: fontSize}}>
+                              padding="0" style={{fontSize: fontSize, wordWrap: 'break-word'}}>
                         {this.props.note.content}
                     </CardText>
                     <CardActions style={{opacity: this.state.hover ? 1 : 0, padding: 0, textAlign: 'right'}}>
@@ -81,7 +81,7 @@ class Note extends Component {
                         <NoteMenu note={this.props.note}/>
                     </CardActions>
                 </Card>
-                    <Dialog
+                <Dialog
                     modal={false}
                     open={this.state.open}
                     contentStyle={{width: 600}}
